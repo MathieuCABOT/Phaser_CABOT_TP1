@@ -26,11 +26,15 @@ var stars;
 var scoreText;
 var bomb;
 
+var jump =0;
+
+
+
 
 function preload(){
 	this.load.image('background','assets/sky.jpg');	
 	//this.load.image('fond','assets/fond.png');
-	this.load.image('etoile','assets/star.png');
+	this.load.image('etoile','assets/star2.png');
 	this.load.image('sol','assets/platform.png');
 	this.load.image('bomb','assets/bomb.png');
 	this.load.spritesheet('perso','assets/blabla.png',{frameWidth: 23, frameHeight: 17});
@@ -101,6 +105,7 @@ function create(){
 
 
 function update(){
+	//vitesse perso (-300)
 	if(cursors.left.isDown){
 		player.anims.play('left', true);
 		player.setVelocityX(-300);
@@ -117,7 +122,28 @@ function update(){
 	if(cursors.up.isDown && player.body.touching.down){
 		player.setVelocityY(-330);
 	} 
+//le double saut
+	/!
+
+	if(cursors.up.isDown && jumpCount < 2){
+		jump++;
+		player.setVelocityY(-330);
+	} 
+
+	if(!cursors.up.isDown && jumpCount < 2){
+		jump++;
+		player.setVelocityY(-330);
+	} 
+
+
+	if(player.body.touching.down){
+		jump = 0;
+	} 
+
+	!/
 	
+//https://www.html5gamedevs.com/topic/33881-how-to-double-jump-with-phaser/
+
 }
 function hitBomb(player, bomb){
 	this.physics.pause();
@@ -139,8 +165,14 @@ function collectStar(player, star){
 			Phaser.Math.Between(400,800):
 			Phaser.Math.Between(0,400);
 		var bomb = bombs.create(x, 16, 'bomb');
-		bomb.setBounce(2);
+		bomb.setBounce(1.001);
 		bomb.setCollideWorldBounds(true);
 		bomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
 	}
 }
+
+
+
+
+
+
