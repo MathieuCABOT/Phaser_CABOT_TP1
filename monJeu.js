@@ -1,16 +1,19 @@
 var config = {
+
 	type: Phaser.AUTO,
 	width: 800,
 	height: 600,
+
 physics: {
         default: 'arcade',
-        arcade: {
-            gravity: { y: 300 },
-            debug: true
+       
+        	arcade: {
+            	gravity: { y: 300 },
+            	debug: true
         }
-    },
-scene: {
+},
 
+scene: {
 		preload: preload,
 		create: create,
 		update: update
@@ -45,9 +48,11 @@ function preload(){
 
 
 function create(){
+
 	this.add.image(400,300,'background');
 
 	platforms = this.physics.add.staticGroup();
+
 		platforms.create(310,490,'sol').setScale(0.15,1).refreshBody();
 		platforms.create(10,460,'sol').setScale(0.15).refreshBody();
 
@@ -64,7 +69,7 @@ function create(){
 		platforms.create(100,368,'sol').setScale(0.15).refreshBody();
 		platforms.create(170,368,'sol').setScale(0.15).refreshBody();
 		platforms.create(240,368,'sol').setScale(0.15).refreshBody();
-		platforms.create(310,368,'sol').setScale(0.15).refreshBody();
+		platforms.create(310,368,'sol').setScale(0.15).refreshBody(); 
 	
 	player = this.physics.add.sprite(20,400,'perso');
 	player.setCollideWorldBounds(true);
@@ -73,7 +78,9 @@ function create(){
 	this.physics.add.collider(player,platforms);
 	
 	cursors = this.input.keyboard.createCursorKeys(); 
-	
+
+//------------------------------------------------------------------
+//l'animation
 	this.anims.create({
 		key:'left',
 		frames: this.anims.generateFrameNumbers('perso', {start: 0, end: 3}),
@@ -87,6 +94,9 @@ function create(){
 		frameRate: 20
 	});
 	
+//------------------------------------------------------------------
+//ajout des étoiles
+
 	stars = this.physics.add.group({
 		key: 'etoile',
 		repeat:11,
@@ -110,11 +120,15 @@ function update(){
 		player.anims.play('left', true);
 		player.setVelocityX(-300);
 		player.setFlipX(false);
-	}else if(cursors.right.isDown){
+	}
+
+	else if(cursors.right.isDown){
 		player.setVelocityX(300);
 		player.anims.play('left', true);
 		player.setFlipX(true);
-	}else{
+	}
+
+	else{
 		player.anims.play('stop', true);
 		player.setVelocityX(0);
 	}
@@ -122,10 +136,10 @@ function update(){
 	if(cursors.up.isDown && player.body.touching.down){
 		player.setVelocityY(-330);
 	} 
-//le double saut
-	/!
 
-	if(cursors.up.isDown && jumpCount < 2){
+//le double saut
+	
+	/!if(cursors.up.isDown && jumpCount < 2){
 		jump++;
 		player.setVelocityY(-330);
 	} 
@@ -138,9 +152,9 @@ function update(){
 
 	if(player.body.touching.down){
 		jump = 0;
-	} 
+	} !/
 
-	!/
+	
 	
 //https://www.html5gamedevs.com/topic/33881-how-to-double-jump-with-phaser/
 
@@ -155,8 +169,10 @@ function hitBomb(player, bomb){
 function collectStar(player, star){
 	star.disableBody(true,true);
 	score += 10;
-	scoreText.setText('score: '+score);
+	scoreText.setText('score: '+ score);
+
 	if(stars.countActive(true)===0){
+
 		stars.children.iterate(function(child){
 			child.enableBody(true,child.x,0, true, true);
 		});
